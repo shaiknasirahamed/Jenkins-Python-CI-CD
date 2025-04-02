@@ -1,5 +1,48 @@
 pipeline {
     agent any
+
+    stages {
+        stage('Setup Virtual Environment') {
+            steps {
+                sh '''
+                    python3 -m venv venv
+                    source venv/bin/activate
+                    python3 -m pip install --upgrade pip
+                '''
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                    source venv/bin/activate
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    source venv/bin/activate
+                    pytest tests/
+                '''
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                sh '''
+                    source venv/bin/activate
+                    python app.py
+                '''
+            }
+        }
+    }
+}
+
+pipeline {
+    agent any
     environment {
         GIT_URL = 'https://github.com/shaiknasirahamed/Jenkins-Python-CI-CD.git'
     }
