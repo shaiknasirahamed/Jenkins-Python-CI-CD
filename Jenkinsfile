@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh '''
                     python3 -m venv venv
-                    source venv/bin/activate
+                    . venv/bin/activate
                     python3 -m pip install --upgrade pip
                 '''
             }
@@ -15,7 +15,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    source venv/bin/activate
+                    .  venv/bin/activate
                     pip install -r requirements.txt
                 '''
             }
@@ -24,7 +24,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    source venv/bin/activate
+                    .  venv/bin/activate
                     pytest tests/
                 '''
             }
@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy Application') {
             steps {
                 sh '''
-                    source venv/bin/activate
+                    . venv/bin/activate
                     python app.py
                 '''
             }
